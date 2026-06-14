@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="stylesheet" href="style.css">
+    <title>Busque Flora Nativa</title>
+</head>
+<body>
+    <header>
+        <div class="header-logo">
+            <h1>Plante<span>FloraGaúcha</span></h1>
+            <div class="header-use-bar">
+                <div class="use-segment" style="background-color: #ff5757"></div>
+                <div class="use-segment" style="background-color: #ffde59"></div>
+                <div class="use-segment" style="background-color: #7ed957"></div>
+                <div class="use-segment" style="background-color: #ff914d"></div>
+                <div class="use-segment" style="background-color: #38b6ff"></div>
+                <div class="use-segment" style="background-color: #cb6ce6"></div>
+            </div>
+        </div>
+        <nav class="info-nav">
+            <button class="info-btn" data-section="sobre">Sobre</button>
+            <button class="info-btn" data-section="usos">Usos populares</button>
+            <button class="info-btn" data-section="vegetacao">Vegetação do Estado</button>
+            <button class="info-btn" data-section="ajude">Ajude o Plante!</button>
+        </nav>
+    </header>
+
+    <main>
+        <div id="map-wrapper">
+            <div id="map-container"></div>
+
+            <div id="map-hud" class="map-hud"></div>
+
+            <!-- Painel de Informações Adicionais -->
+            <div id="info-overlay" class="info-overlay">
+                <button id="close-info" class="close-info">&times;</button>
+                <div id="info-content" class="info-content">
+                    <!-- O conteúdo será injetado via JavaScript -->
+                    <section id="content-sobre" class="info-section">
+                        <h2>Sobre o Projeto</h2>
+                        <p>O PlanteFloraGaúcha é uma ferramenta dedicada à valorização das espécies de plantas nativas do Rio Grande do Sul de uso popular e importância comercial. Atualmente são contempladas 596 espécies de plantas, mas esse número está longe de representar toda a diversidade e importância da flora gaúcha! Afinal, mais de 5 mil espécies de plantas são nativas do Rio Grande do Sul, e constantemente estamos aprendendo mais sobre elas. As informações da distribuição das espécies contempladas no PlanteFloraGaúcha representam os registros destas na base de dados do speciesLink, assim como na rede social de ciência cidadã iNaturalist, conforme revisão (maio de 2026). Por isso, sua participação em plataformas voltadas à registros de espécies contribui diretamente para o desenvolvimento e qualidade das informações do Plante!</p>
+                        <p>Consulte por um município de interesse no estado e descubra quais plantas de uso popular temos registros para ele! Conheça quais sistemas ecológicos estão presentes em cada município do estado, e investigue quais plantas podem ocorrer em cada sistema.</p>
+                        <p>O PlanteFloraGaúcha foi desenvolvido como parte do Trabalho de Conclusão de Curso em Ciências Biológicas (Bacharelado) da Universidade Federal do Rio Grande do Sul (UFRGS) por Lucas Eduardo Seidel, sob orientação do Prof. Dr. Heinrich Hasenack (Departamento de Ecologia do Instituto de Biociências), coorientação do Dr. Allan de Oliveira de Oliveira (Centro de Ecologia da UFRGS), e apoio do Laboratório de Geoprocessamento do Centro de Ecologia da UFRGS.</p>
+                        <div style="font-size: 0.8rem; color: #666; border-top: 1px solid #eee; padding-top: 1rem; margin-top: 2rem; text-align: justify;">
+                            <p><strong>Saiba mais:</strong><br>
+                            <a href="https://www.ufrgs.br/labgeo/" target="_blank" style="color: inherit;">https://www.ufrgs.br/labgeo/</a><br>
+                            <a href="https://specieslink.net/" target="_blank" style="color: inherit;">https://specieslink.net/</a><br>
+                            <a href="https://www.inaturalist.org/" target="_blank" style="color: inherit;">https://www.inaturalist.org/</a></p>
+                            <p>Secretaria de Planejamento, Governança e Gestão-RS/Departamento de Planejamento Governamental/Divisão de Planejamento Territorial e Desenvolvimento Regional</p>
+                            <p>Hasenack, H., Weber, E. J., Boldrini, I. I., Trevisan, R., Flores, C. A., & Dewes, H. 2023. Biophysical delineation of grassland ecological systems in the State of Rio Grande do Sul, Southern Brazil. Iheringia Série Botânica, 78: e2023001. DOI 10.21826/2446-182312023v78e2023001</p>
+                        </div>
+                    </section>
+                    <section id="content-usos" class="info-section">
+                        <h2>Usos Populares</h2>
+                        <p>As plantas nativas de uso popular do estado do Rio Grande do Sul estão categorizadas em seis usos distintos, apresentados a seguir. Clique nos cards de cada espécie para conhecer mais a respeito das características dela, assim como seus usos!</p>
+                        <div class="use-info-grid">
+                            <div class="use-info-item">
+                                <img src="img/icon_alimenticia.png" alt="Alimentícia">
+                                <div>
+                                    <p style="margin: 0;"><strong>Alimentícia:</strong> As plantas de uso alimentício são aquelas que podem ser empregadas na alimentação humana. Delas podem se aproveitar diversas partes da planta: frutos, folhas, flores, raízes... Seja para consumo <i>in natura</i> ou utilizados no preparo de sucos, geléias, sorvetes, sopas, refogados e muito mais. Descubra as diferentes formas de uso alimentício das plantas em suas descrições.</p>
+                                    <p style="margin: 0;"><strong>Importante:</strong> Plantas podem conter toxinas que oferecem risco à saúde quando consumidas. Não se alimente de plantas encontradas na natureza sem ter conhecimento de identificação e preparo apropriados.</p>
+                                </div>
+                            </div>
+                            <div class="use-info-item">
+                                <img src="img/icon_artesanal.png" alt="Artesanal">
+                                <div><p style="margin: 0;"><strong>Artesanal:</strong> As plantas de uso artesanal são aquelas que podem ser empregadas na confecção de diversos produtos feitos à mão. Sementes, folhas, fibras, caules e outras partes vegetais podem servir de matéria-prima para a produção de biojoias, cestos, tramados, entalhes, corantes naturais, utensílios e muitos outros artefatos. Descubra em cada espécie as diferentes possibilidades de aproveitamento artesanal.</p></div>
+                            </div>
+                             <div class="use-info-item">
+                                <img src="img/icon_forrageira.png" alt="Forrageira">
+                                <div><p style="margin: 0;"><strong>Forrageira:</strong> As plantas de uso forrageiro são aquelas que podem contribuir para a alimentação dos animais. Elas podem ser aproveitadas através do manejo do pastoreio ou mesmo utilizadas na produção de forragem a partir de diversas partes da planta. Muitas dessas espécies são características dos campos sulinos e apresentam resistência ao pastejo, desempenhando papel importante na manutenção dos sistemas pecuários aliado à preservação dos ecossistemas campestres. Descubra nas descrições das espécies suas formas de utilização na alimentação animal.</p></div>
+                            </div>
+                             <div class="use-info-item">
+                                <img src="img/icon_madeireira.png" alt="Madeireira">
+                                <div>
+                                    <p style="margin: 0;"><strong>Madeireira:</strong> As plantas de uso madeireiro são aquelas cuja madeira pode ser aproveitada para diferentes finalidades, desde construções e mobiliário até a produção de lenha, carvão, celulose e papel. Algumas espécies destacam-se pela qualidade, resistência ou durabilidade de sua madeira, enquanto outras possuem relevância histórica na economia regional. Descubra nas descrições das espécies os diferentes usos e características de suas madeiras.</p>
+                                    <p style="margin: 0;"><strong>Importante:</strong> A exploração excessiva de recursos florestais está entre as principais causas de ameaça a diversas espécies nativas. Por isso, algumas plantas incluídas nesta categoria encontram-se atualmente protegidas por legislação específica.</p>
+                                </div>
+                            </div>
+                            <div class="use-info-item">
+                                <img src="img/icon_medicinal.png" alt="Medicinal">
+                                <div>
+                                    <p style="margin: 0;"><strong>Medicinal:</strong> As plantas nativas de uso medicinal são aquelas empregadas na medicina popular e tradicional para auxiliar na prevenção ou no tratamento de diferentes condições de saúde e promoção do bem-estar. Folhas, flores, cascas, raízes e outras partes podem ser utilizadas na forma de chás, infusões, compressas, tinturas, cataplasmas e preparações diversas. Descubra nas descrições das espécies seus usos tradicionais e as evidências disponíveis sobre suas propriedades medicinais.</p>
+                                    <p style="margin: 0;"><strong>Importante:</strong> O conhecimento sobre uso medicinal das plantas não substitui a avaliação por profissional da saúde ou o tratamento prescrito por médico. Plantas podem ter ação tóxica ou mesmo interromper o funcionamento de medicamentos; nenhuma informação no PlanteFloraGaúcha deve ser utilizada sem antes consultar um médico.</p>
+                                </div>
+                            </div>
+                            <div class="use-info-item">
+                                <img src="img/icon_ornamental.png" alt="Ornamental">
+                                <div><p style="margin: 0;"><strong>Ornamental:</strong> As plantas nativas de uso ornamental e paisagístico são aquelas valorizadas por suas características estéticas, podendo ser empregadas na composição de jardins, quintais, parques, praças e espaços urbanos. Formas e cores de flores, folhas, frutos contribuem para a criação de ambientes mais agradáveis e para a valorização da biodiversidade local. Muitas dessas espécies também podem ser cultivadas em vasos, jardineiras, cercas-vivas ou utilizadas em arranjos florais. Descubra nas descrições das espécies suas qualidades ornamentais e possibilidades de cultivo.</p></div>
+                            </div>
+                           
+                        </div>
+                    </section>
+                    <section id="content-vegetacao" class="info-section">
+                        <h2>Vegetação do Rio Grande do Sul</h2>
+                        <p>O Rio Grande do Sul é agraciado pelo encontro de dois biomas: a Mata Atlântica e o Pampa. Assim, o estado possui uma grande diversidade de ambientes formados por plantas únicas em diferentes condições de solo e clima, apresentando formações campestres e florestais muito diversas. No PlanteFloraGaúcha você pode consultar pelos diferentes <strong>Sistemas Ecológicos Campestres e Florestais</strong> que compõem o estado, assim como quais estão presentes em cada município; aqui foi adotada a regionalização do estado em sistemas ecológicos (Hasenack et al., 2023), considerando as descrição das fisionomias campestres (Boldrini, 2009), e das regiões fitoecológicas florestais (IBGE 2004). Os Sistemas Ecológicos representados no estado incluem:</p>
+
+                        <div class="eco-info-grid">
+                            <div class="eco-info-item">
+                                <img src="img/placeholder_img.png" alt="Campo de altitude">
+                                <div><p style="margin: 0;"><strong>Campo de altitude:</strong> Os campos de altitude ocorrem nas regiões mais altas do estado, acima de 700m de altura; apesar da fisionomia campestre, eles pertencem ao bioma Mata Atlântica. São formados por paisagens abertas, principalmente em solos profundos e pouco férteis, com alta precipitação ao longo do ano todo; assim, é uma paisagem moldada pelo uso sazonal do fogo e pelo pastejo com baixa carga animal. Predominam as espécies de plantas herbáceas incluindo gramíneas (capim-caninha, capim-mimoso, etc…) e leguminosas (sirastro-farroupilha, galáxia-rosa, etc…), com cactos e verbenas mais presentes em regiões de solo raso.</p></div>
+                            </div>
+                            <div class="eco-info-item">
+                                <img src="img/placeholder_img.png" alt="Campo arbustivo">
+                                <div><p style="margin: 0;"><strong>Campo arbustivo:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.</p></div>
+                            </div>
+                            <div class="eco-info-item">
+                                <img src="img/placeholder_img.png" alt="Campo com areais">
+                                <div><p style="margin: 0;"><strong>Campo com areais:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Proin eget tortor risus. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus suscipit tortor eget felis porttitor volutpat.</p></div>
+                            </div>
+                            <div class="eco-info-item">
+                                <img src="img/placeholder_img.png" alt="Campo de barba-de-bode">
+                                <div><p style="margin: 0;"><strong>Campo de barba-de-bode:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque in ipsum id orci porta dapibus. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Cras ultricies ligula sed magna dictum porta. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Curabitur aliquet quam id dui posuere blandit. Mauris blandit aliquet elit.</p></div>
+                            </div>
+                            <div class="eco-info-item">
+                                <img src="img/placeholder_img.png" alt="Campo com espinilho">
+                                <div><p style="margin: 0;"><strong>Campo com espinilho:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Donec rutrum congue leo eget malesuada. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Quisque velit nisi.</p></div>
+                            </div>
+                            <div class="eco-info-item">
+                                <img src="img/placeholder_img.png" alt="Campo de solos rasos">
+                                <div><p style="margin: 0;"><strong>Campo de solos rasos:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin molestie malesuada. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Nulla quis lorem ut libero malesuada feugiat. Proin eget tortor risus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae. Proin eget tortor risus.</p></div>
+                            </div>
+                            <div class="eco-info-item">
+                                <img src="img/placeholder_img.png" alt="Campo graminoso">
+                                <div><p style="margin: 0;"><strong>Campo graminoso:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur aliquet quam id dui posuere blandit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec rutrum congue leo eget malesuada.</p></div>
+                            </div>
+                            <div class="eco-info-item">
+                                <img src="img/placeholder_img.png" alt="Campo litorâneo">
+                                <div><p style="margin: 0;"><strong>Campo litorâneo:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus suscipit tortor eget felis porttitor volutpat. Pellentesque in ipsum id orci porta dapibus. Nulla porttitor accumsan tincidunt. Donec rutrum congue leo eget malesuada. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Proin eget tortor risus.</p></div>
+                            </div>
+                            <div class="eco-info-item">
+                                <img src="img/placeholder_img.png" alt="Campo submontano interior">
+                                <div><p style="margin: 0;"><strong>Campo submontano interior:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.</p></div>
+                            </div>
+                            <div class="eco-info-item">
+                                <img src="img/placeholder_img.png" alt="Campo submontano atlântico">
+                                <div><p style="margin: 0;"><strong>Campo submontano atlântico:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porttitor lectus nibh. Proin eget tortor risus. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et.</p></div>
+                            </div>
+                            <div class="eco-info-item">
+                                <img src="img/placeholder_img.png" alt="Floresta com araucária">
+                                <div><p style="margin: 0;"><strong>Floresta com araucária:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Cras ultricies ligula sed magna dictum porta. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Curabitur aliquet quam id dui posuere blandit. Sed porttitor lectus nibh. Proin eget tortor risus. Vivamus magna justo.</p></div>
+                            </div>
+                            <div class="eco-info-item">
+                                <img src="img/placeholder_img.png" alt="Floresta tropical">
+                                <div><p style="margin: 0;"><strong>Floresta tropical:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sollicitudin molestie malesuada. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Nulla quis lorem ut libero malesuada feugiat. Proin eget tortor risus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.</p></div>
+                            </div>
+                            <div class="eco-info-item">
+                                <img src="img/placeholder_img.png" alt="Floresta subtropical costeira">
+                                <div><p style="margin: 0;"><strong>Floresta subtropical costeira:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur aliquet quam id dui posuere blandit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec rutrum congue leo eget malesuada.</p></div>
+                            </div>
+                            <div class="eco-info-item">
+                                <img src="img/placeholder_img.png" alt="Floresta subtropical interior">
+                                <div><p style="margin: 0;"><strong>Floresta subtropical interior:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus suscipit tortor eget felis porttitor volutpat. Pellentesque in ipsum id orci porta dapibus. Nulla porttitor accumsan tincidunt. Donec rutrum congue leo eget malesuada. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Proin eget tortor risus.</p></div>
+                            </div>
+                        </div>
+
+                        <div style="font-size: 0.8rem; color: #666; border-top: 1px solid #eee; padding-top: 1rem; margin-top: 2rem; text-align: justify;">
+                            <p><strong>Saiba mais:</strong></p>
+                            <p>Boldrini, I. I. 2009. A flora dos campos do Rio Grande do Sul. In Campos sulinos: conservação e uso sustentável da biodiversidade. (V. D. Pillar, S. C. Müller, Z. M. S. Castilhos & A. V. A. Jacques, eds.). Ministério do Meio Ambiente, Brasília, p. 63-77.</p>
+                            <p>Hasenack, H., Weber, E. J., Boldrini, I. I., Trevisan, R., Flores, C. A., & Dewes, H. 2023. Biophysical delineation of grassland ecological systems in the State of Rio Grande do Sul, Southern Brazil. Iheringia Série Botânica, 78: e2023001. DOI 10.21826/2446-182312023v78e2023001</p>
+                            <p>IBGE, Rio de Janeiro.IBGE-Instituto Brasileiro de Geografia e Estatística. 2004. Mapa de vegetação do Brasil (escala 1:5.000.000). IBGE, Rio de Janeiro.</p>
+                        </div>
+                    </section>
+                    <section id="content-ajude" class="info-section">
+                        <h2>Ajude o Plante!</h2>
+                        <p>O PlanteFloraGaúcha existe pois pessoas como <strong>você</strong> contribuem para o conhecimento da ciência em redes sociais como o iNaturalist. Fotografando plantas ao seu redor e registrando na plataforma, você permite que especialistas identifiquem as espécies que ocorrem no estado e enriquece o conhecimento sobre a distribuição das plantas nativas de uso popular. O PlanteFloraGaúcha somente considera os registros classificados como “Nível de Pesquisa” (<em>“Research Grade”</em>), e somente utiliza as fotografias que se encontram sob licenças de uso livre (CC0) ou com atribuição (CC BY; CC BY-NC), conforme o sistema Creative Commons (CC).</p>
+                        <p><strong>Acesse o iNaturalist:</strong> <a href="https://www.inaturalist.org/" target="_blank">https://www.inaturalist.org/</a></p>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        <aside class="sidebar">
+            <div class="sidebar-sticky-header">
+                <div class="view-toggle">
+                    <input type="radio" name="map-view" value="municipios" id="view-mun" checked>
+                    <label for="view-mun">Municípios</label>
+                    
+                    <input type="radio" name="map-view" value="sistemas" id="view-sis">
+                    <label for="view-sis">Sistemas Ecológicos</label>
+                </div>
+                <div class="search-container">
+                    <div class="search-input-group">
+                        <input type="text" placeholder="Busque por espécie, uso ou local...">
+                        <button id="toggle-filters" class="icon-filter-btn" title="Filtros Avançados">
+                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                        </button>
+                    </div>
+                    <button id="botao-busca" title="Limpar e Voltar">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                    </button>
+                </div>
+                
+                <!-- Filtros de Pesquisa (Sobreposto) -->
+                <div id="filters-content" class="filters-content hidden">
+                    <div class="filter-group">
+                        <p><strong>Filtrar por Uso:</strong></p>
+                        <div class="filter-options">
+                            <label><input type="checkbox" name="uso" value="alimentícia"> <img src="img/icon_alimenticia.png" alt=""> Alimentícia</label>
+                            <label><input type="checkbox" name="uso" value="artesanal"> <img src="img/icon_artesanal.png" alt=""> Artesanal</label>
+                            <label><input type="checkbox" name="uso" value="forrageira"> <img src="img/icon_forrageira.png" alt=""> Forrageira</label>
+                            <label><input type="checkbox" name="uso" value="madeireira"> <img src="img/icon_madeireira.png" alt=""> Madeireira</label>
+                            <label><input type="checkbox" name="uso" value="medicinal"> <img src="img/icon_medicinal.png" alt=""> Medicinal</label>
+                            <label><input type="checkbox" name="uso" value="ornamental"> <img src="img/icon_ornamental.png" alt=""> Ornamental</label>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <p><strong>Filtrar por Grau de Ameaça:</strong></p>
+                        <div class="filter-options threat-filters">
+                            <label><input type="checkbox" name="grauAmeaca" value="CR"> Crítico (CR)</label>
+                            <label><input type="checkbox" name="grauAmeaca" value="EN"> Em Perigo (EN)</label>
+                            <label><input type="checkbox" name="grauAmeaca" value="VU"> Vulnerável (VU)</label>
+                            <label><input type="checkbox" name="grauAmeaca" value="NT"> Quase Ameaçada (NT)</label>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <p><strong>Filtrar por Forma de Vida:</strong></p>
+                        <div class="filter-options">
+                            <label><input type="checkbox" name="formaDeVida" value="aquática"> <img src="img/icon_aquatica.png" alt=""> Aquática</label>
+                            <label><input type="checkbox" name="formaDeVida" value="arbusto"> <img src="img/icon_arbusto.png" alt=""> Arbusto</label>
+                            <label><input type="checkbox" name="formaDeVida" value="árvore"> <img src="img/icon_arvore.png" alt=""> Árvore</label>
+                            <label><input type="checkbox" name="formaDeVida" value="bambu"> <img src="img/icon_bambu.png" alt=""> Bambu</label>
+                            <label><input type="checkbox" name="formaDeVida" value="epífita"> <img src="img/icon_epifita.png" alt=""> Epífita</label>
+                            <label><input type="checkbox" name="formaDeVida" value="erva"> <img src="img/icon_erva.png" alt=""> Erva</label>
+                            <label><input type="checkbox" name="formaDeVida" value="hemiepífita"> <img src="img/icon_hemiepifita.png" alt=""> Hemiepífita</label>
+                            <label><input type="checkbox" name="formaDeVida" value="hemiparasita"> <img src="img/icon_hemiparasita.png" alt=""> Hemiparasita</label>
+                            <label><input type="checkbox" name="formaDeVida" value="trepadeira"> <img src="img/icon_trepadeira.png" alt=""> Liana/Trepadeira</label>
+                            <label><input type="checkbox" name="formaDeVida" value="palmeira"> <img src="img/icon_palmeira.png" alt=""> Palmeira</label>
+                            <label><input type="checkbox" name="formaDeVida" value="rupícola"> <img src="img/icon_rupicola.png" alt=""> Rupícola</label>
+                            <label><input type="checkbox" name="formaDeVida" value="subarbusto"> <img src="img/icon_subarbusto.png" alt=""> Subarbusto</label>
+                            <label><input type="checkbox" name="formaDeVida" value="suculenta"> <img src="img/icon_suculenta.png" alt=""> Suculenta</label>
+                            <label><input type="checkbox" name="formaDeVida" value="terrícola"> <img src="img/icon_terricola.png" alt=""> Terrícola</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="result-count" class="result-count"></div>
+            <section class="card-container">
+            <!-- <article class="card">
+                <h2>Juçara</h2>
+                <p>Euterpe edulis</p>
+                <p><strong>Uso popular:</strong> Alimentícia</p>
+                <a href="https://reflora.jbrj.gov.br/reflora/listaBrasil/ConsultaPublicaUC/BemVindoConsultaPublicaConsultar.do?invalidatePageControlCounter=1&idsFilhosAlgas=%5B2%5D&idsFilhosFungos=%5B1%2C11%2C10%5D&lingua=&grupo=5&genero=Euterpe&especie=edulis&autor=&nomeVernaculo=&nomeCompleto=&formaVida=null&substrato=null&ocorreBrasil=QUALQUER&ocorrencia=OCORRE&endemismo=TODOS&origem=TODOS&regiao=QUALQUER&estado=QUALQUER&ilhaOceanica=32767&domFitogeograficos=QUALQUER&bacia=QUALQUER&vegetacao=TODOS&mostrarAte=SUBESP_VAR&opcoesBusca=TODOS_OS_NOMES&loginUsuario=Visitante&senhaUsuario=&contexto=consulta-publica" target="_blank">Saiba mais</a>
+            </article>
+            <article class="card">
+                <h2>Butiá</h2>
+                <p>Butia odorada</p>
+                <p><strong>Uso popular:</strong> Alimentícia, Paisagística, Artesanal</p>
+                <a href="https://floradobrasil.jbrj.gov.br/reflora/listaBrasil/ConsultaPublicaUC/BemVindoConsultaPublicaConsultar.do?invalidatePageControlCounter=2&idsFilhosAlgas=%5B2%5D&idsFilhosFungos=%5B1%2C11%2C10%5D&lingua=&grupo=6&familia=null&genero=&especie=&autor=&nomeVernaculo=&nomeCompleto=Arecaceae+Butia+odorata+%28Barb.Rodr.%29+Noblick&formaVida=null&substrato=null&ocorreBrasil=QUALQUER&ocorrencia=OCORRE&endemismo=TODOS&origem=TODOS&regiao=QUALQUER&estado=QUALQUER&ilhaOceanica=32767&domFitogeograficos=QUALQUER&bacia=QUALQUER&vegetacao=TODOS&mostrarAte=SUBESP_VAR&opcoesBusca=TODOS_OS_NOMES&loginUsuario=Visitante&senhaUsuario=&contexto=consulta-publica" target="_blank">Saibda mais</a>
+            </article> -->
+            </section>
+        </aside>
+    </main>
+    
+    <footer class="footer">
+        <ul class="footer-links">
+            <li><a href="https://floradobrasil.jbrj.gov.br/" target="_blank">Flora e Funga do Brasil</a></li>
+            <li><a href="https://specieslink.net/" target="_blank">SpeciesLink</a></li>
+            <li><a href="https://www.inaturalist.org/" target="_blank">iNaturalist</a></li>
+        </ul>
+    </footer>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="script.js"></script>
+</body>
+</html>
