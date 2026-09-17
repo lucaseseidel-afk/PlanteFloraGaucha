@@ -21,7 +21,12 @@
                 <div class="use-segment" style="background-color: #cb6ce6"></div>
             </div>
         </div>
-        <nav class="info-nav">
+        <button class="mobile-menu-toggle" type="button" aria-label="Abrir menu de navegação" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <nav class="info-nav" aria-label="Menu de navegação secundária">
             <button class="info-btn" data-section="sobre">Sobre</button>
             <button class="info-btn" data-section="usos">Usos populares</button>
             <button class="info-btn" data-section="vegetacao">Sistemas Ecológicos</button>
@@ -40,7 +45,7 @@
                 <button id="close-info" class="close-info">&times;</button>
                 <div id="info-content" class="info-content">
                     <!-- O conteúdo será injetado via JavaScript -->
-                    <section id="content-sobre" class="info-section">
+                    <section id="content-sobre" class="info-section has-extra-scroll-space">
                         <h2>Sobre o Projeto</h2>
                         <p>O PlanteFloraGaúcha é uma ferramenta dedicada à valorização das espécies de plantas nativas do Rio Grande do Sul de uso popular e importância comercial. Atualmente são contempladas 596 espécies de plantas, mas esse número está longe de representar toda a diversidade e importância da flora gaúcha! Afinal, mais de 5 mil espécies de plantas são nativas do Rio Grande do Sul, e constantemente estamos aprendendo mais sobre elas. As informações da distribuição das espécies contempladas no PlanteFloraGaúcha representam os registros destas na base de dados do speciesLink, assim como na rede social de ciência cidadã iNaturalist, conforme revisão (maio de 2026). Por isso, sua participação em plataformas voltadas à registros de espécies contribui diretamente para o desenvolvimento e qualidade das informações do Plante!</p>
                         <p>Consulte por um município de interesse no estado e descubra quais plantas de uso popular temos registros para ele! Conheça quais sistemas ecológicos estão presentes em cada município do estado, e investigue quais plantas podem ocorrer em cada sistema.</p>
@@ -54,7 +59,7 @@
                             <p>Hasenack, H., Weber, E. J., Boldrini, I. I., Trevisan, R., Flores, C. A., & Dewes, H. 2023. Biophysical delineation of grassland ecological systems in the State of Rio Grande do Sul, Southern Brazil. Iheringia Série Botânica, 78: e2023001. DOI 10.21826/2446-182312023v78e2023001</p>
                         </div>
                     </section>
-                    <section id="content-usos" class="info-section">
+                    <section id="content-usos" class="info-section has-extra-scroll-space">
                         <h2>Usos Populares</h2>
                         <p>As plantas nativas de uso popular do estado do Rio Grande do Sul estão categorizadas em seis usos distintos, apresentados a seguir. Clique nos cards de cada espécie para conhecer mais a respeito das características dela, assim como seus usos!</p>
                         <div class="use-info-grid">
@@ -94,7 +99,7 @@
                            
                         </div>
                     </section>
-                    <section id="content-vegetacao" class="info-section">
+                    <section id="content-vegetacao" class="info-section has-extra-scroll-space">
                         <h2>Sistemas Ecológicos do Rio Grande do Sul</h2>
                         <p>O Rio Grande do Sul é agraciado pelo encontro de dois biomas: a Mata Atlântica e o Pampa. Assim, o estado possui uma grande diversidade de ambientes formados por plantas únicas em diferentes condições de solo e clima, apresentando formações campestres e florestais muito diversas. No PlanteFloraGaúcha você pode consultar pelos diferentes <strong>Sistemas Ecológicos Campestres e Florestais</strong> que compõem o estado, assim como quais estão presentes em cada município; aqui foi adotada a regionalização do estado em sistemas ecológicos (Hasenack et al., 2023), considerando as descrição das fisionomias campestres (Boldrini, 2009), e das regiões fitoecológicas florestais (IBGE 2004). Os Sistemas Ecológicos representados no estado incluem:</p>
 
